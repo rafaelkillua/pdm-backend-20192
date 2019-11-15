@@ -45,6 +45,7 @@ module.exports = {
       // if (typeof isPaid === 'boolean') query.dt_pgto[isPaid ? '$ne' : '$eq'] = null
       if (tipo_despesa) query.id_tipo_despesa = { $eq: tipo_despesa }
       if (tipo_pgto) query.id_tipo_pgto = { $eq: tipo_pgto }
+      console.log(req.query, query)
 
       const payments = await Pagamento.find(query).sort('dt_vencimento').populate('id_tipo_pgto id_tipo_despesa')
       return res.status(200).json(payments)
