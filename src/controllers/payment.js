@@ -52,5 +52,15 @@ module.exports = {
     } catch (error) {
       return res.status(400).json({ message: error.message })
     }
+  },
+  
+  payment: async (req, res) => {
+    try {
+      const { paymentId } = req.params
+      const payment = await Pagamento.findById(paymentId).populate('id_tipo_pgto id_tipo_despesa')
+      return res.status(200).json(payment)
+    } catch (error) {
+      return res.status(400).json({ message: error.message })
+    }
   }
 }

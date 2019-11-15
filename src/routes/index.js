@@ -6,6 +6,7 @@ module.exports = app => {
   // PAYMENT
   app.post('/payment/new', paymentController.newPayment)
   app.get('/payment/find', paymentController.payments)
+  app.get('/payment/:paymentId', paymentController.payment)
 
   // PAYMENT TYPE
   app.post('/paymentType/new', paymentTypeController.newPaymentType)
