@@ -35,6 +35,37 @@ module.exports = {
     }
   },
 
+  editPayment: async (req, res) => {
+    const { 
+      descricao,
+      dt_vencimento,
+      valor,
+      dt_pgto,
+      vr_multa,
+      vr_juro,
+      tipo_pgto,
+      tipo_despesa
+    } = req.body
+
+    const { paymentId } = req.params
+
+    try {
+      const editedPayment = await Pagamento.findByIdAndUpdate(paymentId, {
+        descricao,
+        dt_vencimento,
+        valor,
+        dt_pgto,
+        vr_multa,
+        vr_juro,
+        id_tipo_pgto: tipo_pgto,
+        id_tipo_despesa: tipo_despesa
+      })
+      return res.status(200).json(editedPayment)
+    } catch (error) {
+      return res.status(400).json({ message: error.message })
+    }
+  },
+
   payments: async (req, res) => {
     try {
       const { startDate, endDate, isPaid, tipo_despesa, tipo_pgto } = req.query
@@ -57,10 +88,22 @@ module.exports = {
   payment: async (req, res) => {
     try {
       const { paymentId } = req.params
+      if (!paymentId) throw new Error('ID de pagamento inválido')
       const payment = await Pagamento.findById(paymentId).populate('id_tipo_pgto id_tipo_despesa')
       return res.status(200).json(payment)
     } catch (error) {
       return res.status(400).json({ message: error.message })
     }
-  }
+  },
+  
+  deletePayment: async (req, res) => {
+    try {
+      const { paymentId } = req.params
+      if (!paymentId) throw new Error('ID de pagamento inválido')
+      const payment = await Pagamento.findByIdAndRemove(paymentId).populate('id_tipo_pgto id_tipo_despesa')
+      return res.status(200).json(payment)
+    } catch (error) {
+      return res.status(400).json({ message: error.message })
+    }
+  },
 }

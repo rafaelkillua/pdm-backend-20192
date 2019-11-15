@@ -4,15 +4,17 @@ const expenseTypeController = require('../controllers/expenseType')
 
 module.exports = app => {
   // PAYMENT
-  app.post('/payment/new', paymentController.newPayment)
-  app.get('/payment/find', paymentController.payments)
+  app.put('/payment', paymentController.newPayment)
+  app.get('/payment/list', paymentController.payments)
   app.get('/payment/:paymentId', paymentController.payment)
+  app.patch('/payment/:paymentId', paymentController.editPayment)
+  app.delete('/payment/:paymentId', paymentController.deletePayment)
 
   // PAYMENT TYPE
-  app.post('/paymentType/new', paymentTypeController.newPaymentType)
-  app.get('/paymentType/find', paymentTypeController.paymentTypes)
+  app.put('/paymentType', paymentTypeController.newPaymentType)
+  app.get('/paymentType/list', paymentTypeController.paymentTypes)
   
   // EXPENSE TYPE
-  app.post('/expenseType/new', expenseTypeController.newExpenseType)
-  app.get('/expenseType/find', expenseTypeController.expenseTypes)
+  app.put('/expenseType', expenseTypeController.newExpenseType)
+  app.get('/expenseType/list', expenseTypeController.expenseTypes)
 }
