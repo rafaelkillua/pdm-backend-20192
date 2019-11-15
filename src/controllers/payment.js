@@ -37,7 +37,16 @@ module.exports = {
 
   payments: async (req, res) => {
     try {
-      const payments = await Pagamento.find().sort('dt_vencimento asc').populate('id_tipo_pgto id_tipo_despesa')
+      const { startDate, endDate, isPaid, tipo_despesa, tipo_pgto } = req.query
+      const query = {}
+
+      if (startDate) query.dt_vencimento = { $gte: startDate }
+      if (endDate) query.dt_vencimento = { $lte: endDate }
+      // if (typeof isPaid === 'boolean') query.dt_pgto[isPaid ? '$ne' : '$eq'] = null
+      if (tipo_despesa) query.id_tipo_despesa = { $eq: tipo_despesa }
+      if (tipo_pgto) query.id_tipo_pgto = { $eq: tipo_pgto }
+
+      const payments = await Pagamento.find(query).sort('dt_vencimento').populate('id_tipo_pgto id_tipo_despesa')
       return res.status(200).json(payments)
     } catch (error) {
       return res.status(400).json({ message: error.message })
