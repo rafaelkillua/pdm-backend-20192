@@ -42,7 +42,7 @@ module.exports = {
 
       if (startDate) query.dt_vencimento = { $gte: startDate }
       if (endDate) query.dt_vencimento = { $lte: endDate }
-      // if (typeof isPaid === 'boolean') query.dt_pgto[isPaid ? '$ne' : '$eq'] = null
+      if (isPaid !== undefined) query.dt_pgto[isPaid ? '$ne' : '$eq'] = null
       if (tipo_despesa) query.id_tipo_despesa = { $eq: tipo_despesa }
       if (tipo_pgto) query.id_tipo_pgto = { $eq: tipo_pgto }
       console.log(req.query, query)
